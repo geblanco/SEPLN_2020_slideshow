@@ -1,0 +1,203 @@
+\documentclass[]{beamer}
+\usepackage{pgfpages}
+
+% \setbeameroption{show notes on second screen}
+
+% Include any extra LaTeX packages required
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  citestyle=authoryear
+]{biblatex}
+
+\addbibresource{./library.bib}
+
+%% Packages
+  \usepackage{listings}
+  \usepackage{multicol}
+  \usepackage{booktabs}
+  \usepackage{xcolor}
+  \usepackage{times}
+  \usepackage{tikz}
+  \usepackage{amsmath}
+  \usepackage{verbatim}
+  \usetikzlibrary{arrows.meta,shapes}
+
+\usetheme{metropolis}
+
+%% Settings and new commands
+  \def\mAlertSpace{\vspace{0.5em}}
+  \def\mOrangeItem{\item[\textcolor{mLightBrown}{\textbullet}]}
+  % 36616a
+  \definecolor{feldgrau}{rgb}{0.3, 0.36, 0.33}
+  \newcommand{\mSlideTitle}{{{\color{gray}\secname}} \# \subsecname \hfill {\scriptsize$|$ UNED}}
+  \newcommand{\mShortTitle}{\secname \hfill {\scriptsize$|$ UNED}}
+
+  \tikzstyle{every picture}+=[remember picture]
+  \everymath{\displaystyle}
+  \input{json_listing.tex}
+
+%% Preamble
+  \title{Cross-lingual Training for\\Multiple-Choice Question Answering}
+  \author{\textbf{Guillermo Echegoyen Blanco} \\ \'Alvaro Rodrigo \\ Anselmo Pe\~nas \\ 
+    \{gblanco, alvarory, anselmo\} \textbf{at} lsi.uned.es \\ \\
+    NLP \& IR Group \\
+    National Distance Education University (UNED)}
+    \titlegraphic{\hfill\includegraphics[height=0.75cm]{./figures/UNED.jpeg}
+  }
+  \date{}
+  \addtobeamertemplate{frametitle}{}{%
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[anchor=north east,yshift=-8pt,xshift=-8pt] at (current page.north east) {{\scriptsize$|$ UNED}};
+    \end{tikzpicture}
+  }
+
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Overview}
+  \setbeamertemplate{section in toc}[sections numbered]
+  \tableofcontents[hideallsubsections]
+\end{frame}
+
+\section{Introduction}
+  \begin{frame}{\secname}
+    \begin{alertblock}{Multiple-Choice Question Answering}
+      \mAlertSpace
+      \textbf{Def:} Given a supporting text, a question and a set of possible answers, choose the correct one. Commonly used to measure reading comprehension in humans.
+    \end{alertblock}
+    \begin{itemize}
+      \item The majority of datasets are in English.
+      \item Non-English datasets are usually small.
+      \item Usually extracted from exams for humans.
+    \end{itemize}
+    \alert{ToDo := Add example?, name collections?}
+  \end{frame}
+
+  \begin{frame}{\secname}
+    \begin{alertblock}{Motivation}
+      \begin{itemize}
+        \item How to zero-shot transfer from a big MC-QA collection to a smaller one.
+        \item Can we zero-shot transfer to a smaller collection in another language?
+        \item Harder exams for humans are so for machines too?
+      \end{itemize}
+    \end{alertblock}
+  \end{frame}
+
+\section{Problem Statement}
+  \begin{frame}{\secname}
+    \begin{alertblock}{Datasets}
+      \begin{itemize}
+        \item \textbf{RACE} (\cite{Lai2017}): Collected from Chinese schools English exams. \textbf{$>$ 97K questions} with, 4 possible answers each, English monolingual.
+        \item \textbf{Entrance Exams} (\cite{rodrigo_systems_2018}): University access exams in Japan. \textbf{$\approx$ 200 questions}, 4 possible answers each. Crowd-translated to 4 different languages.
+      \end{itemize}
+    \end{alertblock}
+    \metroset{block=fill}
+    \begin{alertblock}{Example (taken from RACE)}
+      \textbf{Evidence:} "The park is open from 8 am to 5 pm." \\
+      \textbf{Question:} The park is open for \_\_ hours a day. \\
+      \textbf{Options:} A. eight B. nine C. ten D. eleven
+    \end{alertblock}
+  \end{frame}
+
+  \note[itemize]{%
+    \item RACE:
+      \begin{enumerate}
+        \item Divided into two collections: middle and high school.
+      \end{enumerate}
+    \item EE:
+      \begin{enumerate}
+        \item $\approx$ 500 times smaller than RACE. 
+        \item Not suitable for fine tuning.
+        \item Translated to Spanish, Italian, French, Russian, and (just one edition) German.
+        \item Exams from three different years
+      \end{enumerate}
+    \item RACE are pre University exams, EE are exams at University level.
+  }
+
+  \begin{frame}{\secname}
+    \begin{alertblock}{Models \& Baselines}
+      \mAlertSpace
+      \begin{columns}[T, onlytextwidth]
+        \column{0.35\textwidth}
+          \mAlertSpace
+          \begin{itemize}
+            \item BERT-base
+            \item Multi BERT-base
+          \end{itemize}
+        \column{0.65\textwidth}
+          \mAlertSpace
+          \begin{itemize}
+            \item Random
+            \item Longest answer (\cite{Rogers2020quail})
+          \end{itemize}
+      \end{columns}
+    \end{alertblock}
+    \mAlertSpace
+    \begin{alertblock}{Method}
+      \begin{itemize}
+        \item No hyper-parameters search.
+        \item Fine-tune each model over RACE.
+        \item Test each model over RACE.
+        \item Test each model over Entrance Exams in all languages and all years
+      \end{itemize}
+    \end{alertblock}
+  \end{frame}
+
+\section{Results}
+  \begin{frame}{\secname}
+    \input{./tables/results.tex}
+    \mAlertSpace
+    \small{** German only available for one year.}
+  \end{frame}
+
+  \note[itemize]{%
+    \item Multi-BERT performs better in all scenarios
+    \item Performance drops with human-graded difficulty (Mid $<$ High $<$ EE)
+    \item Russian is specially difficult as language with very different semantics are not well understood nor tokenized by the model.
+  }
+
+\section{Conclusions \& Future Work}
+  \begin{frame}{\secname}
+    \begin{alertblock}{Conclusions}
+      \begin{itemize}
+        \item Zero-shot transfer to a smaller task still holds performance in the same language.
+        \item Can be done to a different task and language with a multilingual model.
+        \item Performance is hampered by exams difficulty in the same way human grades do.
+      \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{Future Work}
+      \begin{itemize}
+        \item Continue exploring low-resource languages.
+      \end{itemize}
+      \alert{ToDo:= Remove Future work? Add something else?}
+    \end{alertblock}
+  \end{frame}
+
+\section{Outcomes}
+  \begin{frame}{\secname}
+    \begin{alertblock}{Out main contributions are:}
+      \begin{itemize}
+        \item SOTA on Entrance Exams in several languages.
+        \item RACE trained BERT and Multi BERT models.
+      \end{itemize}
+    \end{alertblock}
+  \end{frame}
+
+  \note[itemize]{%
+    \item SOTA in Spanish, Italian and German. 
+  }
+
+\begin{frame}[standout]
+  Thank you!\\
+  Questions?
+\end{frame}
+
+\section{References}
+  \begin{frame}[allowframebreaks]{References}
+    \printbibliography%
+  \end{frame}
+
+\end{document}
