@@ -66,20 +66,50 @@
   \begin{frame}{\secname}
     \begin{alertblock}{Multiple-Choice Question Answering}
       \mAlertSpace
-      \textbf{Def:} Given a supporting text, a question and a set of possible answers, choose the correct one. Commonly used to measure reading comprehension in humans.
+      \textbf{Def:} Given a supporting text, a question and a set of possible answers, choose the correct one. 
+      \mAlertSpace
+      \metroset{block=fill}
+      \begin{block}{{\color{mLightGreen}\textbf{Example}} \normalfont{(taken from RACE (\cite{Lai2017}))}}
+        \mAlertSpace
+        \textbf{Evidence:} The park is open from 8 am to 5 pm. \\
+        \textbf{Question:} \textit{The park is open for \_\_ hours a day.} \\
+        \textbf{Options:} A. eight B. {\color{mLightGreen} nine} C. ten D. eleven
+      \end{block}
     \end{alertblock}
-    \begin{itemize}
-      \item The majority of datasets are in English.
-      \item Non-English datasets are usually small.
-      \item Usually extracted from exams for humans.
-    \end{itemize}
-    \alert{ToDo := Add example?, name collections?}
   \end{frame}
+  \begin{frame}{\secname}
+    \begin{alertblock}{Multiple-Choice Question Answering}
+      \mAlertSpace
+      \begin{itemize}
+        \item Measure reading comprehension in humans.
+        \item Collections are usually extracted from exams for humans.
+        \item Many real world exams are private.
+        \item The majority of dataset are in English.
+    \end{itemize}
+    \end{alertblock}
+  \end{frame}
+
+  \note[itemize]{%
+    \item Private exams are not suitable for research
+  }
 
   \begin{frame}{\secname}
     \begin{alertblock}{Motivation}
       \begin{itemize}
-        \item How to zero-shot transfer from a big MC-QA collection to a smaller one.
+        \item Scarce non-English datasets.
+        \item Non-English datasets are usually small.
+      \end{itemize}
+    \end{alertblock}
+  \end{frame}
+  
+  \note[itemize]{%
+    \item Not enough data to train in non-English collections
+  }
+
+  \begin{frame}{\secname}
+    \begin{alertblock}{Research Questions}
+      \begin{itemize}
+        \item How to zero-shot transfer from a big MC-QA collection to a smaller one?
         \item Can we zero-shot transfer to a smaller collection in another language?
         \item Harder exams for humans are so for machines too?
       \end{itemize}
@@ -89,16 +119,8 @@
 \section{Problem Statement}
   \begin{frame}{\secname}
     \begin{alertblock}{Datasets}
-      \begin{itemize}
-        \item \textbf{RACE} (\cite{Lai2017}): Collected from Chinese schools English exams. \textbf{$>$ 97K questions} with, 4 possible answers each, English monolingual.
-        \item \textbf{Entrance Exams} (\cite{rodrigo_systems_2018}): University access exams in Japan. \textbf{$\approx$ 200 questions}, 4 possible answers each. Crowd-translated to 4 different languages.
-      \end{itemize}
-    \end{alertblock}
-    \metroset{block=fill}
-    \begin{alertblock}{Example (taken from RACE)}
-      \textbf{Evidence:} "The park is open from 8 am to 5 pm." \\
-      \textbf{Question:} The park is open for \_\_ hours a day. \\
-      \textbf{Options:} A. eight B. nine C. ten D. eleven
+      \mAlertSpace
+      \input{tables/dataset_stats.tex}
     \end{alertblock}
   \end{frame}
 
@@ -116,26 +138,25 @@
       \end{enumerate}
     \item RACE are pre University exams, EE are exams at University level.
   }
-
   \begin{frame}{\secname}
-    \begin{alertblock}{Models \& Baselines}
+    \begin{alertblock}{Models}
       \mAlertSpace
-      \begin{columns}[T, onlytextwidth]
-        \column{0.35\textwidth}
-          \mAlertSpace
-          \begin{itemize}
-            \item BERT-base
-            \item Multi BERT-base
-          \end{itemize}
-        \column{0.65\textwidth}
-          \mAlertSpace
-          \begin{itemize}
-            \item Random
-            \item Longest answer (\cite{Rogers2020quail})
-          \end{itemize}
-      \end{columns}
+      \begin{itemize}
+        \item BERT-base
+        \item Multi BERT-base
+      \end{itemize}
     \end{alertblock}
-    \mAlertSpace
+    \begin{alertblock}{Baselines}
+      \mAlertSpace
+      \begin{itemize}
+        \item Random
+        \item Longest answer (\cite{Rogers2020quail})
+      \end{itemize}
+    \end{alertblock}
+  \end{frame}
+
+\section{Experiments}
+  \begin{frame}{\secname}
     \begin{alertblock}{Method}
       \begin{itemize}
         \item No hyper-parameters search.
@@ -150,31 +171,36 @@
   \begin{frame}{\secname}
     \input{./tables/results.tex}
     \mAlertSpace
-    \small{** German only available for one year.}
   \end{frame}
 
   \note[itemize]{%
     \item Multi-BERT performs better in all scenarios
     \item Performance drops with human-graded difficulty (Mid $<$ High $<$ EE)
     \item Russian is specially difficult as language with very different semantics are not well understood nor tokenized by the model.
+    \item ** German only available for one year.
+    \item ToDo := Information about previous results
   }
 
 \section{Conclusions \& Future Work}
   \begin{frame}{\secname}
     \begin{alertblock}{Conclusions}
       \begin{itemize}
-        \item Zero-shot transfer to a smaller task still holds performance in the same language.
-        \item Can be done to a different task and language with a multilingual model.
-        \item Performance is hampered by exams difficulty in the same way human grades do.
+        \item Performance holds across different tasks.
+        \item Performance holds across languages in multilingual models.
+        \item Performance drops with difficulty for humans.
       \end{itemize}
     \end{alertblock}
     \begin{alertblock}{Future Work}
       \begin{itemize}
-        \item Continue exploring low-resource languages.
+        \item Transfer knowledge learnt in one language to another one.
       \end{itemize}
-      \alert{ToDo:= Remove Future work? Add something else?}
     \end{alertblock}
   \end{frame}
+
+  \note[itemize]{%
+    \item When exams are more difficult for humans, they are so for machines (Mid $<$ High $<$ EE)
+    \item FW: specially when languages are low-resourced.
+  }
 
 \section{Outcomes}
   \begin{frame}{\secname}
