@@ -1,26 +1,34 @@
-    \begin{tikzpicture}
-      \node (table) {\input{./tables/results.tex}};
-      \node (rect_res_1) [visible on=<2>] at (0,1.6) {
-      \tikz{ \draw [mLightBrown,ultra thick,rounded corners]
-        ($(table.south west) !.9! (table.north west)$)
-        rectangle
-        ($(table.south east) !.7! (table.north east)$);
-      }};
-      \node (res_text_1) [visible on=<2>] at (-2,-4) { \textbf{Difficulty affects machines too} };
-      \path [-{Latex[width=2mm]}, visible on=<2>] (res_text_1.west) edge [bend left=25] (rect_res_1.west);
-      \node (rect_res_2) [visible on=<3->] at (0,1.4) {
-      \tikz{ \draw [mLightBrown,ultra thick,rounded corners]
-        ($(table.south west) !.9! (table.north west)$)
-        rectangle
-        ($(table.south east) !.8! (table.north east)$);
-      }};
-      \node (rect_res_3)  [visible on=<3->] at (0,0.3) {
-      \tikz{ \draw [mLightBrown,ultra thick,rounded corners]
-        ($(table.south west) !.9! (table.north west)$)
-        rectangle
-        ($(table.south east) !.8! (table.north east)$);
-      }};
-      \node (res_text_2) [anchor=west, visible on=<3->] at (-5,-4) { \textbf{Pre-university graded exams results are comparable} };
-      \path [-{Latex[width=2mm]}, visible on=<3->] (res_text_2.west) edge [bend left=25] (rect_res_2.west);
-      \path [-{Latex[width=2mm]}, visible on=<3->] (res_text_2.west) edge [bend left=15] (rect_res_3.west);
-    \end{tikzpicture}
+\begin{tikzpicture}
+  \node (table) {\input{./tables/results.tex}};
+  \node (rect_res_1) [visible on=<2>] at (0,1.6) {
+  \tikz{ \draw [mLightBrown,ultra thick,rounded corners]
+    ($(table.south west) !.9! (table.north west)$)
+    rectangle
+    ($(table.south east) !.7! (table.north east)$);
+  }};
+  \node (res_text_1) [visible on=<2>] at (-2,-4) { \textbf{Difficulty affects machines too} };
+  \path [-{Latex[width=2mm]}, visible on=<2>] (res_text_1.west) edge [bend left=25] (rect_res_1.west);
+  \node (rect_res_2) [visible on=<3>] at (0,1.4) {
+  \tikz{ \draw [mLightBrown,ultra thick,rounded corners]
+    ($(table.south west) !.9! (table.north west)$)
+    rectangle
+    ($(table.south east) !.8! (table.north east)$);
+  }};
+  \node (rect_res_3)  [visible on=<3>] at (0,0.3) {
+  \tikz{ \draw [mLightBrown,ultra thick,rounded corners]
+    ($(table.south west) !.9! (table.north west)$)
+    rectangle
+    ($(table.south east) !.8! (table.north east)$);
+  }};
+  \node (res_text_2) [anchor=west, visible on=<3>] at (-5,-4) { \textbf{Pre-university graded exams results are comparable} };
+  \path [-{Latex[width=2mm]}, visible on=<3>] (res_text_2.west) edge [bend left=25] (rect_res_2.west);
+  \path [-{Latex[width=2mm]}, visible on=<3>] (res_text_2.west) edge [bend left=15] (rect_res_3.west);
+  \node (rect_res_4)  [visible on=<4>] at (0,0.3) {
+  \tikz{ \draw [mLightBrown,ultra thick,rounded corners]
+    ($(table.south west) !.9! (table.north west)$)
+    rectangle
+    ($(table.south east) !.8! (table.north east)$);
+  }};
+  \node (res_text_4) [visible on=<4>] at (-2,-4) { \textbf{Best results are always in english} };
+  \path [-{Latex[width=2mm]}, visible on=<4>] (res_text_4.west) edge [bend left=25] (rect_res_4.west);
+\end{tikzpicture}

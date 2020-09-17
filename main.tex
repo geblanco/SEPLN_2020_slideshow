@@ -140,6 +140,30 @@
       \end{enumerate}
     \item RACE are pre University exams, EE are exams at University level.
   }
+
+  \begin{frame}{\secname}
+    \begin{alertblock}{Approach}
+      \mAlertSpace
+      Not enough data on Entrance Exams for training:
+      \begin{itemize}
+        \item Train over RACE
+        \item Evaluate over Entrance Exams
+      \end{itemize}
+    \end{alertblock}
+  \end{frame}
+
+\section{Experiments}
+  \begin{frame}{\secname}
+    \begin{alertblock}{Method}
+      \begin{itemize}
+        \item No hyper-parameters search.
+        \item Fine-tune each model over RACE.
+        \item Test each model over RACE.
+        \item Test each model over Entrance Exams in all languages and all years
+      \end{itemize}
+    \end{alertblock}
+  \end{frame}
+
   \begin{frame}{\secname}
     \begin{alertblock}{Models}
       \mAlertSpace
@@ -153,18 +177,6 @@
       \begin{itemize}
         \item Random
         \item Longest answer (\cite{Rogers2020quail})
-      \end{itemize}
-    \end{alertblock}
-  \end{frame}
-
-\section{Experiments}
-  \begin{frame}{\secname}
-    \begin{alertblock}{Method}
-      \begin{itemize}
-        \item No hyper-parameters search.
-        \item Fine-tune each model over RACE.
-        \item Test each model over RACE.
-        \item Test each model over Entrance Exams in all languages and all years
       \end{itemize}
     \end{alertblock}
   \end{frame}
