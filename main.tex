@@ -21,7 +21,7 @@
   \usepackage{tikz}
   \usepackage{amsmath}
   \usepackage{verbatim}
-  \usetikzlibrary{arrows.meta,shapes}
+  \usetikzlibrary{arrows.meta,shapes,calc}
 
 \usetheme{metropolis}
 
@@ -36,6 +36,14 @@
   \tikzstyle{every picture}+=[remember picture]
   \everymath{\displaystyle}
   \input{json_listing.tex}
+
+  \tikzset{
+    invisible/.style={opacity=0},
+    visible on/.style={alt={#1{}{invisible}}},
+    alt/.code args={<#1>#2#3}{%
+      \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+    },
+  }
 
 %% Preamble
   \title{Cross-lingual Training for\\Multiple-Choice Question Answering}
@@ -68,13 +76,7 @@
       \mAlertSpace
       \textbf{Def:} Given a supporting text, a question and a set of possible answers, choose the correct one. 
       \mAlertSpace
-      \metroset{block=fill}
-      \begin{block}{{\color{mLightGreen}\textbf{Example}} \normalfont{(taken from RACE (\cite{Lai2017}))}}
-        \mAlertSpace
-        \textbf{Evidence:} The park is open from 8 am to 5 pm. \\
-        \textbf{Question:} \textit{The park is open for \_\_ hours a day.} \\
-        \textbf{Options:} A. eight B. {\color{mLightGreen} nine} C. ten D. eleven
-      \end{block}
+      \input{./examples/long_race_example.tex}
     \end{alertblock}
   \end{frame}
   \begin{frame}{\secname}
@@ -109,8 +111,8 @@
   \begin{frame}{\secname}
     \begin{alertblock}{Research Questions}
       \begin{itemize}
-        \item How to zero-shot transfer from a big MC-QA collection to a smaller one?
-        \item Can we zero-shot transfer to a smaller collection in another language?
+        \item How to zero-shot transfer from a big MC-QA collection to another one?
+        \item Can we zero-shot transfer to another collection in a different language?
         \item Harder exams for humans are so for machines too?
       \end{itemize}
     \end{alertblock}
@@ -169,16 +171,17 @@
 
 \section{Results}
   \begin{frame}{\secname}
-    \input{./tables/results.tex}
+    \hspace{-1cm}
+    \input{tables/tikztable.tex}
     \mAlertSpace
   \end{frame}
 
   \note[itemize]{%
     \item Multi-BERT performs better in all scenarios
-    \item Performance drops with human-graded difficulty (Mid $<$ High $<$ EE)
     \item Russian is specially difficult as language with very different semantics are not well understood nor tokenized by the model.
     \item ** German only available for one year.
     \item ToDo := Information about previous results
+    \item SOTA on Entrance Exams in several languages: Spanish, Italian and German. 
   }
 
 \section{Conclusions \& Future Work}
@@ -200,20 +203,6 @@
   \note[itemize]{%
     \item When exams are more difficult for humans, they are so for machines (Mid $<$ High $<$ EE)
     \item FW: specially when languages are low-resourced.
-  }
-
-\section{Outcomes}
-  \begin{frame}{\secname}
-    \begin{alertblock}{Out main contributions are:}
-      \begin{itemize}
-        \item SOTA on Entrance Exams in several languages.
-        \item RACE trained BERT and Multi BERT models.
-      \end{itemize}
-    \end{alertblock}
-  \end{frame}
-
-  \note[itemize]{%
-    \item SOTA in Spanish, Italian and German. 
   }
 
 \begin{frame}[standout]
